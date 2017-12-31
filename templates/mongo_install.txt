@@ -1,0 +1,27 @@
+sudo service mongodb start
+
+mongo
+
+use admin;
+
+db.createUser({user:"root",pwd:"<%= mongo_pwd %>",roles:[{role:"userAdminAnyDatabase",db:"admin"}]});
+
+<ctrl>-c
+
+sudo vi /etc/mongod.conf
+
+// TODO: add...
+security:
+  authorization: enabled
+
+sudo service mongodb restart
+
+db.createUser({user:"<%= name %>",pwd:"<%= mongo_pwd %>",roles:[{role:"dbOwner",db:"<%= name %>"}]});
+
+<ctrl>-c
+
+mongo -u "<%= name %>" -p "<%= mongo_pwd %>" --authenticationDatabase "<%= name %>"
+
+db.createCollection('<some collection>');
+
+db.stops.createIndex({time:""});
